@@ -37,6 +37,7 @@
               }
             ],
             "styles": [
+              "src/style/tailwind.css",
               "src/styles.css"
             ],
             "scripts": []
