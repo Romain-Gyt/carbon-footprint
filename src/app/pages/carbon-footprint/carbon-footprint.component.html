@@ -1,0 +1,75 @@
+<div class="flex flex-col gap-6 p-6 bg-gray-100 rounded-lg shadow-lg">
+  <div class="p-4 bg-white rounded-lg shadow">
+    <p class="text-lg font-semibold text-gray-700">
+      La consommation pour
+      <span
+          [ngClass]="{
+            'basse-distance': distanceKm < 100,
+            'haute-distance': distanceKm > 500
+          }"
+          class="font-bold">
+          {{ distanceKm | number:'1.0-2' }}
+      </span>
+      km avec une consommation de
+      <span class="text-blue-500 font-bold">
+        {{ consommationPour100Km | number:'1.0-2' }}
+      </span>
+      L/100 est de
+      <span class="font-bold text-purple-500">
+        {{ totalConsommationPour100Km | number:'1.0-2' }}
+      </span>
+    </p>
+
+    <div class="mt-2">
+      @if (totalConsommationPour100Km > 7) {
+        <span class="text-red-600 font-medium">Votre consommation est élevée</span>
+      } @else if (totalConsommationPour100Km < 4) {
+        <span class="text-green-600 font-medium">Votre consommation est basse</span>
+      } @else {
+        <span class="text-gray-600 font-medium">Votre consommation est normale</span>
+      }
+    </div>
+  </div>
+
+  <div>
+    <button
+      type="button"
+      (click)="add100Km()"
+      class="w-full sm:w-auto bg-blue-700 hover:bg-blue-800 text-white font-medium text-sm px-5 py-2.5 rounded-lg focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      +100 km
+    </button>
+  </div>
+
+  <div class="p-4 bg-white rounded-lg shadow">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Liste des voyages réalisés</h2>
+    <div class="mb-4">
+      <button
+        type="button"
+        (click)="generateTrip()"
+        class="bg-green-600 hover:bg-green-700 text-white font-medium text-sm px-5 py-2.5 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800">
+        Générer un voyage
+      </button>
+    </div>
+    <table class="w-full border-collapse border border-gray-200">
+      <thead>
+      <tr class="bg-gray-50 text-left text-gray-600 uppercase text-sm">
+        <th class="py-2 px-4 border-b border-gray-200">Distance</th>
+        <th class="py-2 px-4 border-b border-gray-200">Consommation pour 100 km</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for(voyage of voyages; track voyage) {
+          <tr class="hover:bg-gray-100">
+            <td class="py-2 px-4 border-b border-gray-200">{{ voyage.distanceKm }} km</td>
+            <td class="py-2 px-4 border-b border-gray-200">{{ voyage.consommationPour100Km }} L</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-6">
+    <app-carbon-footprint-form></app-carbon-footprint-form>
+    <app-carbon-footprint-result></app-carbon-footprint-result>
+  </div>
+</div>
