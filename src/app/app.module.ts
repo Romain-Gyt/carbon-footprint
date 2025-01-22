@@ -9,6 +9,7 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { CarbonFootprintComponent } from './pages/carbon-footprint/carbon-footprint.component';
 import { CarbonFootprintFormComponent } from './pages/carbon-footprint/components/carbon-footprint-form/carbon-footprint-form.component';
 import { CarbonFootprintResultComponent } from './pages/carbon-footprint/components/carbon-footprint-result/carbon-footprint-result.component';
+import {CarbonFootprintComputeService} from './services/carbon-footprint/carbon-footprint-compute.service';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ registerLocaleData(localeFr);
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    CarbonFootprintComputeService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

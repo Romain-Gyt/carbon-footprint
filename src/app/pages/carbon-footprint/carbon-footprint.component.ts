@@ -1,4 +1,5 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { CarbonFootprintComputeService } from '../../services/carbon-footprint/carbon-footprint-compute.service';
 
 @Component({
   selector: 'app-carbon-footprint',
@@ -9,22 +10,18 @@ import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular
 export class CarbonFootprintComponent implements OnInit, OnChanges, OnDestroy {
   distanceKm: number = 0;
   consommationPour100Km: number = 0;
-  totalConsommationPour100Km: number = 0;  // Consommation totale calculée en fonction de la distance et consommation moyenne
-  voyages = [
-    { distanceKm: 50, consommationPour100Km: 5 },
-    { distanceKm: 150, consommationPour100Km: 6 },
-    { distanceKm: 250, consommationPour100Km: 7 },
-    { distanceKm: 350, consommationPour100Km: 8 },
-    { distanceKm: 450, consommationPour100Km: 9 }
-  ];
+  totalConsommationPour100Km: number = 0;
+  totalCo2: number = 0;
+  voyages: any[] = [];
+
+  constructor(private carbonFootPrintService: CarbonFootprintComputeService) {}
 
   ngOnInit(): void {
-    this.moyenneTrip();
+    this.voyages = this.carbonFootPrintService.getVoyages();
+    this.updateStatistics();
   }
 
-  ngOnChanges(): void {
-
-  }
+  ngOnChanges(): void {}
 
   ngOnDestroy(): void {
     console.log('Le composant carbon footprint a été détruit');
@@ -38,33 +35,19 @@ export class CarbonFootprintComponent implements OnInit, OnChanges, OnDestroy {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-
   generateTrip(): void {
     const distance = this.getRandomInt(50, 2000);
     const consommation = this.getRandomInt(4, 10);
-    this.voyages.push({ distanceKm: distance, consommationPour100Km: consommation });
-    this.moyenneTrip();
+    const c02 = (distance * consommation) / 100 * 2.3
+    this.carbonFootPrintService.addVoyage({ distanceKm: distance, consommationPour100Km: consommation,co2: c02 });
+    this.updateStatistics();
   }
 
-  moyenneTrip(): void {
-    const totalVoyages = this.voyages.length;
-
-    if (totalVoyages === 0) {
-      this.distanceKm = 0;
-      this.consommationPour100Km = 0;
-      this.totalConsommationPour100Km = 0;
-      return;
-    }
-    const { totalDistance, totalConsommation } = this.voyages.reduce(
-      (totals, voyage) => ({
-        totalDistance: totals.totalDistance + voyage.distanceKm,
-        totalConsommation: totals.totalConsommation + voyage.consommationPour100Km,
-      }),
-      { totalDistance: 0, totalConsommation: 0 }
-    );
-    this.distanceKm = totalDistance ;
-    this.consommationPour100Km = totalConsommation / totalVoyages;
+  private updateStatistics(): void {
+    const { totalDistance, moyenneConso, totalCo2 } = this.carbonFootPrintService.getResumeVoyage();
+    this.distanceKm = totalDistance;
+    this.consommationPour100Km = moyenneConso;
+    this.totalCo2 = totalCo2;
     this.totalConsommationPour100Km = (this.distanceKm / 100) * this.consommationPour100Km;
   }
-
 }

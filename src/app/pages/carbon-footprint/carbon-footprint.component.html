@@ -18,6 +18,10 @@
       <span class="font-bold text-purple-500">
         {{ totalConsommationPour100Km | number:'1.0-2' }}
       </span>
+      ainsi que un total de Co2 produit de
+      <span class="font-bold text-purple-500">
+        {{ totalCo2 | number:'1.0-2'}}
+      </span>
     </p>
 
     <div class="mt-2">
@@ -55,6 +59,7 @@
       <tr class="bg-gray-50 text-left text-gray-600 uppercase text-sm">
         <th class="py-2 px-4 border-b border-gray-200">Distance</th>
         <th class="py-2 px-4 border-b border-gray-200">Consommation pour 100 km</th>
+        <th class="py-2 px-4 border-b border-gray-200">Co2</th>
       </tr>
       </thead>
       <tbody>
@@ -62,6 +67,7 @@
           <tr class="hover:bg-gray-100">
             <td class="py-2 px-4 border-b border-gray-200">{{ voyage.distanceKm }} km</td>
             <td class="py-2 px-4 border-b border-gray-200">{{ voyage.consommationPour100Km }} L</td>
+            <td class="py-2 px-4 border-b border-gray-200">{{ voyage.co2 | number:'1.0-2' }} co2</td>
           </tr>
         }
       </tbody>
