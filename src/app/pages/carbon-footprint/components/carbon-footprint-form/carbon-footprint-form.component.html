@@ -1,1 +1,81 @@
+<div class="max-w-lg mx-auto mt-10 p-8 bg-white shadow-md rounded-lg">
+  <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Ajouter un Voyage</h2>
 
+  <form [formGroup]="formVoyage" (submit)="addVoyage()">
+    <!-- Champ Type de voyage -->
+    <div class="mb-4">
+      <label for="travelType" class="block text-sm font-medium text-gray-700 mb-1">Type de voyage</label>
+      <select
+        id="travelType"
+        formControlName="travelType"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option value="" disabled>-- Sélectionnez un type de voyage --</option>
+        <option value="car">Voiture</option>
+        <option value="train">Train</option>
+        <option value="plane">Avion</option>
+      </select>
+      <p *ngIf="isSubmitted && formVoyage.get('travelType')?.errors?.['required']" class="text-red-700 mt-1">
+        Le type de voyage est obligatoire
+      </p>
+    </div>
+
+    <!-- Champ Distance -->
+    <div class="mb-4">
+      <label for="distance" class="block text-sm font-medium text-gray-700 mb-1">Distance (km)</label>
+      <input
+        type="number"
+        id="distance"
+        formControlName="distance"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Entrez la distance en km"
+      />
+      <p *ngIf="isSubmitted && formVoyage.get('distance')?.errors?.['required']" class="text-red-700 mt-1">
+        La distance est obligatoire
+      </p>
+      <p *ngIf="isSubmitted && formVoyage.get('distance')?.errors?.['min']" class="text-red-700 mt-1">
+        La distance doit être supérieure à 0
+      </p>
+    </div>
+
+    <!-- Champ Consommation (Affiché uniquement si "Voiture") -->
+    <div class="mb-4" *ngIf="formVoyage.get('travelType')?.value === 'car'">
+      <label for="consommation" class="block text-sm font-medium text-gray-700 mb-1">Consommation (L/100km)</label>
+      <input
+        type="number"
+        id="consommation"
+        formControlName="consommation"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Entrez la consommation en L/100km"
+      />
+      <p *ngIf="isSubmitted && formVoyage.get('consommation')?.errors?.['required']" class="text-red-700 mt-1">
+        La consommation est obligatoire
+      </p>
+      <p *ngIf="isSubmitted && formVoyage.get('consommation')?.errors?.['min']" class="text-red-700 mt-1">
+        La consommation doit être supérieure à 0
+      </p>
+    </div>
+
+    <!-- Champ Date -->
+    <div class="mb-6">
+      <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+      <input
+        type="date"
+        id="date"
+        formControlName="date"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      />
+      <p *ngIf="isSubmitted && formVoyage.get('date')?.errors?.['required']" class="text-red-700 mt-1">
+        La date est obligatoire
+      </p>
+    </div>
+
+    <!-- Bouton Ajouter -->
+    <button
+      type="submit"
+      class="w-full px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md transition-transform transform hover:scale-105 duration-300 ease-in-out"
+    >
+      Ajouter le Voyage
+    </button>
+  </form>
+</div>

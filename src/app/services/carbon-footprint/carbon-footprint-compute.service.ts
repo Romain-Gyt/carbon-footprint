@@ -21,6 +21,29 @@ export class CarbonFootprintComputeService {
     return this.voyages
   }
 
+  calculConsoCo2(voyage: any){
+    let cO2 = 0
+    if (voyage.type !== 'car') {
+      voyage.consommation = 0;
+    }
+    switch(voyage.type){
+      case 'car':  cO2 = (voyage.distance * voyage.consommation) / 100 * 2.3
+        break;
+      case 'train': cO2 = voyage.distance* 0.03;
+        break;
+      case 'plane': cO2 = voyage.distance * 0.2
+        break;
+      default: cO2 = 0
+    }
+    const voyagetoAdd = {
+      distanceKm: voyage.distance,
+      consommationPour100Km: voyage.consommation,
+      co2: cO2,
+      date: voyage.date,
+    }
+    this.addVoyage(voyagetoAdd);
+  }
+
   addVoyage(voyage: any) {
     this.voyages.push(voyage);
   }
